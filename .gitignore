@@ -4,3 +4,6 @@
 # Ignore hidden files excep .gitignore
 .*
 !.gitignore
+
+# Ignore csv test files
+*.csv
