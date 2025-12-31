@@ -8,8 +8,9 @@ which falls short due to difficulty with embedded commas and new lines.
 
 - [ ] vstack: Need to be able to return unique fields per record, potetnially through flag. May also want stdin parding functionality. Definitely want ability to read more than a single file
 - [ ] csvgrep: Need a grep that dosen't get tripped up by embedded new lines
-- [ ] sub\_newline: Substitute new lines with provided character. Single space by default
+- [x] sub\_newline: Substitute new lines with provided character. Single space by default
 
 ## Scripts
 
-- **vstack:** used to stack fields in the same record vertically, often for piping into unix tools that favor new-line-delimited lists
+- **sub\_newline:** Used to replace embedded newline with string of choice. Accepts files but enables piping in following scripts.
+- **vstack:** Used to stack fields in the same record vertically, often for piping into unix tools that favor new-line-delimited lists
