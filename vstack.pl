@@ -1,20 +1,56 @@
-#!/usr/bin/env perl
-
+#!/usr/bin/env perl 
 use strict; use warnings;
 use Text::CSV;
+use Getopt::Std;
 
 # Script simply returns specified columns of each row in new-line delimited list.
-# Currently only accepts single file and list of rows to stack.
-# Will refactor to make more robust in future.
-# Row numbers are currently 0-based.
+# Currently only accepts stdin. Will refactor to make more robust in future.
+# Can return only unique values per row with -u flag.
+
+# Die without stdin
+die "Need to parse from stdin.\n" if -t STDIN;
+
+# Process command line flags
+my %options;
+&getopts("u", \%options);
+
+# Rudimentary error checking on command line args.
+my @requested_fields;
+foreach my $arg (@ARGV) {
+	die "Invalid argument: $arg\n" unless $arg =~ /^[1-9]\d*$/;
+	push @requested_fields, $arg;
+}
 
 my $csv = Text::CSV-> new({binary => 1});
-my $file = shift(@ARGV);
+my $line_no = 1;
 
-open my $fh, "<:encoding(utf8)", $file or die "$file: $!";
+while (<STDIN>) {
+	chomp (my $line = $_);
+	$csv->parse($line) or die "Encountered error on line $line_no of STDIN:\t<$line>\n";
 
-while (my $row = $csv->getline ($fh)) {
-	foreach my $arg (@ARGV) {
-		print "$row->[$arg]\n";
+	# Print all fields by default unless requested fields set. Very verbose.
+	my @all_fields = $csv->fields();
+	my @fields;
+	if (@requested_fields) {
+		foreach my $idx (@requested_fields) {
+			die "Field $idx doesn't exist.\n" unless defined $all_fields[$idx - 1];
+			push @fields, $all_fields[$idx - 1];
+		}
+	} else {
+		@fields = @all_fields;
+	}	
+
+	# Print unique fields per record if flag set. Need to make more elegant.
+	while (my $curr_field = shift @fields) {
+		if (defined($options{"u"})) {
+			my $match = 0;
+			foreach my $test_field (@fields) {
+				$match = 1 if $curr_field eq $test_field;	
+			}
+			print "$curr_field\n" unless $match;
+		} else {
+			print "$curr_field\n";
+		}
 	}
+	$line_no++;
 }
