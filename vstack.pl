@@ -21,7 +21,7 @@ foreach my $arg (@ARGV) {
 	push @requested_fields, $arg;
 }
 
-my $csv = Text::CSV-> new({binary => 1});
+my $csv = Text::CSV-> new({binary => 1, keep_meta_info=>1});
 my $line_no = 1;
 
 while (<STDIN>) {
@@ -34,10 +34,14 @@ while (<STDIN>) {
 	if (@requested_fields) {
 		foreach my $idx (@requested_fields) {
 			die "Field $idx doesn't exist.\n" unless defined $all_fields[$idx - 1];
+			$all_fields[$idx - 1] = "\"$all_fields[$idx - 1]\"" if $csv->is_quoted($idx - 1);
 			push @fields, $all_fields[$idx - 1];
 		}
 	} else {
-		@fields = @all_fields;
+		for (my $i = 0; $i < @all_fields; $i++) {
+			$all_fields[$i] = "\"$all_fields[$i]\"" if $csv->is_quoted($i);	
+			push @fields, $all_fields[$i];
+		}
 	}	
 
 	# Print unique fields per record if flag set. Need to make more elegant.
