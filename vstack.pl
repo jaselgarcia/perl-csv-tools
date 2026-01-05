@@ -48,7 +48,9 @@ while (<STDIN>) {
 	}	
 
 	# Print unique fields per record if flag set. Need to make more elegant.
-	while (my $curr_field = shift @fields) {
+	for (my $i = 0; $i < @fields; $i++) {
+		my $curr_field = $fields[$i];
+
 		if (defined($options{"u"})) {
 			my $match = 0;
 			foreach my $test_field (@fields) {
@@ -56,11 +58,11 @@ while (<STDIN>) {
 			}
 			unless ($match) {
 				print "$curr_field"; 
-				print @fields ? "$delim" : "\n";
+				print $i == $#fields  ? "\n" : "$delim";
 			}
 		} else {
 			print "$curr_field";
-			print @fields ? "$delim" : "\n";
+			print $i == $#fields ? "\n" : "$delim";
 		}
 	}
 
