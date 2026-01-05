@@ -1,4 +1,5 @@
 #!/usr/bin/env perl 
+
 use strict; use warnings;
 use Text::CSV;
 use Getopt::Std;
@@ -12,7 +13,9 @@ die "Need to parse from stdin.\n" if -t STDIN;
 
 # Process command line flags
 my %options;
-&getopts("u", \%options);
+&getopts('ud:', \%options);
+
+my $delim = $options{"d"} || "\n";
 
 # Rudimentary error checking on command line args.
 my @requested_fields;
@@ -51,10 +54,15 @@ while (<STDIN>) {
 			foreach my $test_field (@fields) {
 				$match = 1 if $curr_field eq $test_field;	
 			}
-			print "$curr_field\n" unless $match;
+			unless ($match) {
+				print "$curr_field"; 
+				print @fields ? "$delim" : "\n";
+			}
 		} else {
-			print "$curr_field\n";
+			print "$curr_field";
+			print @fields ? "$delim" : "\n";
 		}
 	}
+
 	$line_no++;
 }
