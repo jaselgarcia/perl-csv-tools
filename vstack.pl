@@ -29,7 +29,8 @@ my $line_no = 1;
 
 while (<STDIN>) {
 	chomp (my $line = $_);
-	$csv->parse($line) or die "Encountered error on line $line_no of STDIN:\t<$line>\n";
+	my ($err_code, $err_str, $err_pos) = $csv->error_diag() if !$csv->parse($line);
+	$csv->parse($line) or die "Encountered error on line $line_no of STDIN:\t<$line>\n$err_code\t$err_str\t$err_pos\n";
 
 	# Print all fields by default unless requested fields set. Very verbose.
 	my @all_fields = $csv->fields();
