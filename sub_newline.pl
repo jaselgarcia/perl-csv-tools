@@ -1,6 +1,7 @@
 #!/usr/bin/env perl
 
 use strict; use warnings;
+use open qw( :std :encoding(utf-8) );
 use Text::CSV;
 
 # Simple script for substituting embedded new lines with first argument.
@@ -24,6 +25,7 @@ while (my $file = shift @ARGV) {
 	while (my $row = $csv->getline($fh)) {
 		foreach my $field (@$row) {
 			$field =~ s/[\n\r]+/$sub/g;
+			$field =~ s/"/''/g;
 			print $field =~ m/.*$sep+.*/ ? "\"$field\"," : "$field,";
 		}
 

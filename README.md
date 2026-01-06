@@ -14,7 +14,9 @@ which falls short due to difficulty with embedded commas and new lines.
 
 - **sub\_newline:** Used to replace embedded newline with string of choice. Accepts files but enables piping in following scripts.
 - **vstack:** Used to stack fields in the same record vertically, often for piping into unix tools that favor new-line-delimited lists.
+- **add-duplicate-info:** *very* specific script for one work-realted use case. Would look to refactor into something more generally useful.
 
 ## Changelog
 
 - 2026-01-05: vstack now accepts delimeter as command line arg though still defaults to `\n`.
+- 2026-01-06: ran into issues with wide charcter errors so reached for `use open` params. Need to study in more detail. Also am encountering issues with fields containing new lines that need to be broken up into multiple fields. Would like to address issue with `sub_newline` though may have to develop pipleline with that and `vstack`.
