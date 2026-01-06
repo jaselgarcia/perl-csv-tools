@@ -54,8 +54,8 @@ while (<STDIN>) {
 
 		if (defined($options{"u"})) {
 			my $match = 0;
-			foreach my $test_field (@fields) {
-				$match = 1 if $curr_field eq $test_field;	
+			for (my $j = $#fields; $j > $i; $j--) {
+				$match = 1 if $curr_field eq $fields[$j];
 			}
 			unless ($match) {
 				print "$curr_field"; 
