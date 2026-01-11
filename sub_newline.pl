@@ -23,10 +23,12 @@ while (my $file = shift @ARGV) {
 	open my $fh, '<:encoding(utf8)', $file or warn "$file: $!";
 
 	while (my $row = $csv->getline($fh)) {
-		foreach my $field (@$row) {
+		for (my $i = 0; $i < scalar (@$row); $i++) {
+			my $field = $row->[$i];
 			$field =~ s/[\n\r]+/$sub/g;
 			$field =~ s/"/''/g;
-			print $field =~ m/.*$sep+.*/ ? "\"$field\"," : "$field,";
+			print $field =~ m/.*$sep+.*/ ? "\"$field\"" : "$field";
+			print $sep unless $i == scalar(@$row) - 1; 
 		}
 
 		print "\n";
