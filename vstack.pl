@@ -1,6 +1,7 @@
 #!/usr/bin/env perl 
 
 use strict; use warnings;
+use open qw( :std :encoding(utf-8) );
 use Text::CSV;
 use Getopt::Std;
 
