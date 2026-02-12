@@ -17,6 +17,7 @@ which falls short due to difficulty with embedded commas and new lines.
 
 ## Changelog
 
+- 2026-02-12: configure vstack to also support utf8 character printing. Also, rename master to main
 - 2026-01-11: encountered silly bug with extra comma in last field in line with `sub_newline` so implemented for loop that only outputs `$sep` only if not last field. Also removed `add-duplicate-info` to `sf-pipeline` where it aligns more closely to the limited scope of that project.
 - 2026-01-06: ran into issues with wide charcter errors so reached for `use open` params. Need to study in more detail. Also am encountering issues with fields containing new lines that need to be broken up into multiple fields. Would like to address issue with `sub_newline` though may have to develop pipleline with that and `vstack`.
 - 2026-01-05: vstack now accepts delimeter as command line arg though still defaults to `\n`.
