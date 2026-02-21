@@ -14,9 +14,10 @@ die "Need to parse from stdin.\n" if -t STDIN;
 
 # Process command line flags
 my %options;
-&getopts('ud:', \%options);
+&getopts('ud:s:', \%options);
 
 my $delim = $options{"d"} || "\n";
+my $sep = $options{"s"} || ",";
 
 # Rudimentary error checking on command line args.
 my @requested_fields;
@@ -25,7 +26,11 @@ foreach my $arg (@ARGV) {
 	push @requested_fields, $arg;
 }
 
-my $csv = Text::CSV-> new({binary => 1, keep_meta_info=>1});
+my $csv = Text::CSV-> new({
+		binary => 1, 
+		keep_meta_info=>1,
+		sep_char => $sep
+	});
 my $line_no = 1;
 
 while (<STDIN>) {
