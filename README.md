@@ -6,14 +6,14 @@ which falls short due to difficulty with embedded commas and new lines.
 
 *Todo:*
 
-- [x] vstack: Need to be able to return unique fields per record, potetnially through flag. May also want stdin parding functionality. Definitely want ability to read more than a single file
-- [ ] csvgrep: Need a grep that dosen't get tripped up by embedded new lines
+- [x] vstack: Need to be able to return unique fields per record, potentially through flag. May also want stdin parsing functionality. Definitely want ability to read more than a single file
+- [ ] csvgrep: Need a grep that doesn't get tripped up by embedded new lines
 - [x] sub\_newline: Substitute new lines with provided character. Single space by default
 - [x] pad\_commas: Script that pads each line with commas to match the maximum number of fields in a given column
 
 ## Scripts
 
-- **sub\_newline:** Used to replace embedded newline with string of choice. Accepts files but enables piping in following scripts.
+- **sub\_newline:**Used to replace embedded newline with string of choice. Accepts files but enables piping in following scripts.
 - **vstack:** Used to stack fields in the same record vertically, often for piping into unix tools that favor new-line-delimited lists.
 
 ## Changelog

@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+# This is a shell wrapper for an awk script that requires two passes over a given stream.
+# Currently using a tmp file but may want to refactor in the future.
+# Shell wrapper requires reuse of the Perl real path one liner.
+
+REAL_PATH=$(perl -MCwd='abs_path' -e 'printf "%s", abs_path("'"$0"'")' | xargs dirname)
+
+if [ $# != 1 ]; then
+	echo "Need one string for header field name." >&2
+	exit 1
+fi
+
+header="$1";
+
+cat > tmp
+
+"$REAL_PATH/pad_commas.awk" -v header="$header" tmp tmp
+
+rm tmp
