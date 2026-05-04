@@ -13,7 +13,7 @@ which falls short due to difficulty with embedded commas and new lines.
 
 ## Scripts
 
-- **sub\_newline:**Used to replace embedded newline with string of choice. Accepts files but enables piping in following scripts.
+- **sub\_newline:** Used to replace embedded newline with string of choice. Accepts files but enables piping in following scripts.
 - **vstack:** Used to stack fields in the same record vertically, often for piping into unix tools that favor new-line-delimited lists.
 
 ## Changelog
