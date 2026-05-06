@@ -22,6 +22,8 @@ FNR == 1 {
 
 {
 	printf $0;
+	if (NF == 0) NF = 1;
+
 	for (i = 0; i < max - NF; i++) {
 	       	printf FS;
 	}
