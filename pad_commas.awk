@@ -1,7 +1,7 @@
 #!/usr/bin/env -S awk -f
 
 BEGIN {
-	FS = ",";
+	FS = delim;
 	max = 0 
 }
 

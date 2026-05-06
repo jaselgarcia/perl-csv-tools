@@ -6,15 +6,16 @@
 
 REAL_PATH=$(perl -MCwd='abs_path' -e 'printf "%s", abs_path("'"$0"'")' | xargs dirname)
 
-if [ $# != 1 ]; then
+if [ $# -lt 1 ]; then
 	echo "Need one string for header field name." >&2
 	exit 1
 fi
 
-header="$1";
+header="$1"
+delim="$2"
 
 cat > tmp
 
-"$REAL_PATH/pad_commas.awk" -v header="$header" tmp tmp
+"$REAL_PATH/pad_commas.awk" -v header="$header" -v delim="$delim" tmp tmp
 
 rm tmp
