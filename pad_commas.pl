@@ -13,11 +13,16 @@ my (
 	%options,
 	$FS,
 	$max,
-	$input
+	$input,
+	$header
 );
 
 # Die without stdin
 die "Need to parse from stdin.\n" if -t STDIN;
+
+# Only allow single optional argument
+die "Only a single optional header field string allowed as argument.\n" if (scalar @ARGV > 1);
+$header = $ARGV[0] || "";
 
 # Process command line flags
 &getopts('F:', \%options);
@@ -49,6 +54,12 @@ while (<STDIN>) {
 foreach my $record (@{$input}) {
 	my $NF = scalar @{$record};
 	$max = $NF > $max ? $NF : $max;
+}
+
+unless ($header =~ /^\s*$/) {
+	for (my $i = 1; $i <= $max; $i++) {
+		printf "%s %s%s", $header, $i, $i == $max ? "\n" : $FS;
+	}
 }
 
 foreach my $record (@{$input}) {
