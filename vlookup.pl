@@ -4,7 +4,6 @@ use strict; use warnings;
 use open qw( :std :encoding(utf-8) );
 use Text::CSV;
 use Getopt::Std;
-use Data::Dumper;
 
 my (	%options,
 	$FS,
@@ -51,6 +50,7 @@ foreach my $arg (@ARGV) {
 	push @search_fields, $arg - 1;
 }
 
+
 while (<stdin>) {
 	chomp(my $line = $_);
 
@@ -64,14 +64,14 @@ while (<stdin>) {
 	
 	my @all_fields = $csv->fields();
 
-	# Populate values with each email field
+	# Populate values with each value field
 	for (my $i = 0; $i < scalar @search_fields; $i++) {
 		my $search_field = $search_fields[$i];
 		$values{$search_field} = $all_fields[$search_field] unless $all_fields[$search_field] eq "";
 	}
 
 	foreach my $value (values %values) {
-		$return = exists $lookup_hash->{$value}[$return_idx] ? $lookup_hash->{$value}[$return_idx] : "";
+		$return = exists $lookup_hash->{$value}->[$return_idx] ? $lookup_hash->{$value}->[$return_idx] : "";
 		push @freq, $return unless $return eq "";
 		# warn "\t$value -> $return\n";
 	}
@@ -82,7 +82,7 @@ while (<stdin>) {
 		$return = shift @freq unless $#freq < 0;
 	}
 
-	printf("%s %s\n",
-	defined $options{"l"} ? $. : "", 
-	$return eq "" ? "0" : $return);
+	printf("%s%s\n", 
+		defined $options{"l"} ? "$. " : "", 
+		defined $return ? $return : 0);
 }
