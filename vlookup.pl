@@ -50,6 +50,8 @@ foreach my $arg (@ARGV) {
 	push @search_fields, $arg - 1;
 }
 
+# die scalar keys %{$lookup_hash};
+
 
 while (<stdin>) {
 	chomp(my $line = $_);
@@ -73,7 +75,7 @@ while (<stdin>) {
 	foreach my $value (values %values) {
 		$return = $lookup_hash->{$value}->[$return_idx] // undef;
 		push @freq, $return unless defined $return;
-		# warn "\t$value -> $return\n";
+		# warn "\t$value -> $return\n" if defined $return;
 	}
 
 	# return max value
