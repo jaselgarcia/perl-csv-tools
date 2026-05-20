@@ -13,14 +13,14 @@ my (	%options,
 );
 
 sub usage {
-	die "Usage: $0 [-d <delimiter>] [ma] <file: lookup array> <int: field to return> <int: search criteria fields>\n";
+	die "Usage: $0 [-d <delimiter>] [lmo] <file: lookup array> <int: field to return> <int: search criteria fields>\n";
 }
 
 # Die without stdin
 die "Need to parse from stdin.\n" if -t STDIN;
 
 # Process command line flags
-&getopts('F:mla', \%options);
+&getopts('F:mlo', \%options);
 $FS = $options{"F"} || ",";
 
 # Rudimentary error checking
@@ -71,8 +71,8 @@ while (<stdin>) {
 	}
 
 	foreach my $value (values %values) {
-		$return = exists $lookup_hash->{$value}->[$return_idx] ? $lookup_hash->{$value}->[$return_idx] : "";
-		push @freq, $return unless $return eq "";
+		$return = $lookup_hash->{$value}->[$return_idx] // undef;
+		push @freq, $return unless defined $return;
 		# warn "\t$value -> $return\n";
 	}
 
@@ -81,6 +81,8 @@ while (<stdin>) {
 		@freq = sort {$b <=> $a} @freq;
 		$return = shift @freq unless $#freq < 0;
 	}
+
+	next if (defined $options{"o"} && ! defined $return);
 
 	printf("%s%s\n", 
 		defined $options{"l"} ? "$. " : "", 
