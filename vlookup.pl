@@ -20,7 +20,7 @@ sub usage {
 die "Need to parse from stdin.\n" if -t STDIN;
 
 # Process command line flags
-&getopts('F:mlo', \%options);
+&getopts('F:mlor', \%options);
 $FS = $options{"F"} || ",";
 
 # Rudimentary error checking
@@ -72,10 +72,24 @@ while (<stdin>) {
 		$values{$search_field} = $all_fields[$search_field] unless $all_fields[$search_field] eq "";
 	}
 
+	# Regex branching logic should be refactored
 	foreach my $value (values %values) {
-		$return = $lookup_hash->{$value}->[$return_idx] // undef;
-		push @freq, $return unless defined $return;
-		# warn "\t$value -> $return\n" if defined $return;
+		if (defined $options{"r"}) { 
+			foreach my $regex (keys %{$lookup_hash}) {
+				if ($value =~ m/$regex/) {
+					$return = $lookup_hash->{$regex}->[$return_idx] // undef;
+					
+					push @freq, $return if defined $return;
+					warn "\t$regex <- $value\n";
+				}
+			}
+		} else {
+
+			$return = $lookup_hash->{$value}->[$return_idx] // undef;
+			
+			push @freq, $return if defined $return;
+			warn "\t$value -> $return\n" if defined $return;
+		}
 	}
 
 	# return max value
