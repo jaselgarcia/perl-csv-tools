@@ -80,7 +80,7 @@ while (<stdin>) {
 					$return = $lookup_hash->{$regex}->[$return_idx] // undef;
 					
 					push @freq, $return if defined $return;
-					warn "\t$regex <- $value\n";
+					# warn "\t$regex <- $value\n";
 				}
 			}
 		} else {
@@ -88,7 +88,7 @@ while (<stdin>) {
 			$return = $lookup_hash->{$value}->[$return_idx] // undef;
 			
 			push @freq, $return if defined $return;
-			warn "\t$value -> $return\n" if defined $return;
+			# warn "\t$value -> $return\n" if defined $return;
 		}
 	}
 
