@@ -14,7 +14,7 @@ die "Need to parse from stdin.\n" if -t STDIN;
 
 # Process command line flags
 my %options;
-&getopts('ud:F:', \%options);
+&getopts('ud:F:t', \%options);
 
 my $delim = $options{"d"} || "\n";
 my $FS = $options{"F"} || ",";
@@ -54,9 +54,15 @@ while (<STDIN>) {
 		}
 	}	
 
+	
 	# Print unique fields per record if flag set. Need to make more elegant.
 	for (my $i = 0; $i < @fields; $i++) {
 		my $curr_field = $fields[$i];
+
+		# Skip empty fields
+		if (defined $options{"t"} && $curr_field =~ /^\s*$/) {
+			next unless $i == $#fields;	
+		}
 
 		if (defined($options{"u"})) {
 			my $match = 0;
@@ -68,7 +74,7 @@ while (<STDIN>) {
 				print $i == $#fields  ? "\n" : "$delim";
 			}
 		} else {
-			print "$curr_field";
+			print "$curr_field"; 
 			print $i == $#fields ? "\n" : "$delim";
 		}
 	}
